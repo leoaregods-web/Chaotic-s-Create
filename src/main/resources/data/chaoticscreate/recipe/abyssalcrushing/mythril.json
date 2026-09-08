@@ -1,0 +1,11 @@
+{
+  "type": "chaoticscreate:abyssalcrushing",
+  "ingredients": [
+    { "item": "chaoticscreate:raw_mythril" }
+  ],
+  "processing_time": 120,
+  "results": [
+    { "id": "chaoticscreate:mythril_ingot" },
+    { "chance": 0.35, "id": "chaoticscreate:mythril_nugget" }
+  ]
+}

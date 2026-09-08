@@ -1,0 +1,18 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:ruptured_capsule"
+    },
+    {
+      "item": "minecraft:glass_pane"
+    }
+  ],
+  "keep_held_item": false,
+  "results": [
+    {
+      "id": "chaoticscreate:empty_capsule",
+      "count": 1
+    }
+  ]
+}

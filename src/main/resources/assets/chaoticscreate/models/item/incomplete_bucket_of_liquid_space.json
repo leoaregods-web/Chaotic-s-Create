@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "chaoticscreate:item/incomplete_bucket_of_liquid_space"
+  }
+}

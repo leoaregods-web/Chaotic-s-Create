@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "chaoticscreate:basic_coil"
+    },
+    "G": {
+      "item": "chaoticscreate:mythril_gear"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "ICI",
+    " G ",
+    "RRR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:processor_inscriber"
+  }
+}

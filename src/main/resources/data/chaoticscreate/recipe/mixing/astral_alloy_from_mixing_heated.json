@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "type": "fluid_stack",
+      "fluid": "createmetalwork:molten_andesite_alloy",
+      "amount": 90
+    },
+    {
+      "type": "fluid_stack",
+      "fluid": "chaoticscreate:liquid_space_source",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:astral_alloy",
+      "count": 1
+    }
+  ]
+}

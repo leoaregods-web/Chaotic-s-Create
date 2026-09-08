@@ -1,0 +1,64 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "chaoticscreate:mythril_ingot"
+  },
+  "transitional_item": {
+    "id": "chaoticscreate:unforged_astra-abyss_ingot"
+  },
+  "sequence": [
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "chaoticscreate:unforged_astra-abyss_ingot"
+        },
+        {
+          "type": "fluid_stack",
+          "amount": 250,
+          "fluid": "chaoticscreate:liquid_argon_source"
+        }
+      ],
+      "results": [
+        {
+          "id": "chaoticscreate:unforged_astra-abyss_ingot"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "chaoticscreate:unforged_astra-abyss_ingot"
+        }
+      ],
+      "results": [
+        {
+          "id": "chaoticscreate:unforged_astra-abyss_ingot"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "chaoticscreate:unforged_astra-abyss_ingot"
+        },
+        {
+          "item": "chaoticscreate:abyssal_iron_ingot"
+        }
+      ],
+      "results": [
+        {
+          "id": "chaoticscreate:unforged_astra-abyss_ingot"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:astra-abyss_ingot"
+    }
+  ],
+  "loops": 1
+}

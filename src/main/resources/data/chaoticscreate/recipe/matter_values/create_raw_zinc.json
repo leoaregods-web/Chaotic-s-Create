@@ -1,0 +1,12 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "create:raw_zinc"
+    },
+    "matter": [
+        {
+            "type": "replication:metallic",
+            "amount": 10.0
+        }
+    ]
+}

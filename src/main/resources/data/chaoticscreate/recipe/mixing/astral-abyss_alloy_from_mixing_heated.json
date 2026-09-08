@@ -1,0 +1,20 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:abyss_alloy",
+      "amount": 90
+    },
+    {
+      "item": "chaoticscreate:astral_alloy",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:astral-abyss_alloy",
+      "count": 1
+    }
+  ]
+}

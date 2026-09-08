@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "chaoticscreate:abyssal_iron_ore"
+  },
+  "result": {
+    "id": "chaoticscreate:abyssal_iron_ingot"
+  }
+}

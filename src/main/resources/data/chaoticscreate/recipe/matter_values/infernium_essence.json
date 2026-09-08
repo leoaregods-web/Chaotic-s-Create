@@ -1,0 +1,12 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "mysticalagriculture:inferium_essence"
+  },
+  "matter": [
+    {
+      "type": "replication:earth",
+      "amount": 2.0
+    }
+  ]
+}

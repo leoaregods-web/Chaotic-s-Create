@@ -1,0 +1,12 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:basic_processor"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 20.0
+    }
+  ]
+}

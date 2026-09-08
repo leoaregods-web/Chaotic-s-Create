@@ -1,0 +1,12 @@
+{
+  "values": [
+    "chaoticscreate:liquid_oxygen_source",
+    "chaoticscreate:liquid_oxygen_flowing",
+    "chaoticscreate:liquid_nitrogen_source",
+    "chaoticscreate:liquid_nitrogen_flowing",
+    "chaoticscreate:liquid_argon_source",
+    "chaoticscreate:liquid_argon_flowing",
+    "chaoticscreate:liquid_carbon_source",
+    "chaoticscreate:liquid_carbon_flowing"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:large_capsule"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 500,
+      "fluid": "chaoticscreate:liquid_argon_source"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:large_argon_capsule"
+    }
+  ]
+}

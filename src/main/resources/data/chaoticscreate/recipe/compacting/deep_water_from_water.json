@@ -1,0 +1,16 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "fluid_stack",
+      "fluid": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:deep_water_source",
+      "amount": 250
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "createmetalwork:crushed_netherite_scrap"
+    },
+    "matter": [
+        {
+            "type": "replication:metallic",
+            "amount": 30.0
+        },
+        {
+            "type": "replication:precious",
+            "amount": 6.0
+        }
+    ]
+}

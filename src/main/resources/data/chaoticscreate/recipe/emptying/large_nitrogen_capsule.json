@@ -1,0 +1,17 @@
+{
+  "type": "create:emptying",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:large_argon_capsule"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:large_capsule"
+    },
+    {
+      "amount": 500,
+      "id": "chaoticscreate:liquid_argon_source"
+    }
+  ]
+}

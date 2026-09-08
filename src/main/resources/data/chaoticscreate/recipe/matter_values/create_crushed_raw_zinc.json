@@ -1,0 +1,16 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "create:crushed_raw_zinc"
+    },
+    "matter": [
+        {
+            "type": "replication:metallic",
+            "amount": 10.0
+        },
+        {
+            "type": "replication:earth",
+            "amount": 1.0
+        }
+    ]
+}

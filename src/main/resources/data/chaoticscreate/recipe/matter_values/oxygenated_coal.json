@@ -1,0 +1,20 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:oxygenated_coal"
+  },
+  "matter": [
+    {
+      "type": "chaoticscreate:gaseous",
+      "amount": 6.0
+    },
+    {
+      "type": "replication:organic",
+      "amount": 1.0
+    },
+    {
+      "type": "replication:precious",
+      "amount": 1.0
+    }
+  ]
+}

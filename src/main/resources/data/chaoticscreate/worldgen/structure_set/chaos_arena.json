@@ -1,0 +1,18 @@
+{
+  "structures": [
+    {
+      "structure": "chaoticscreate:chaos_arena",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 48,
+    "separation": 24,
+    "salt": 209571834,
+    "frequency_reduction_method": "default",
+    "frequency": 1,
+    "locate_offset": [0, 0, 0],
+    "exclusion_zone": null
+  }
+}

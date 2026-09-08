@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": { "item": "chaoticscreate:astra-abyss_ingot" },
+    "C": { "item": "chaoticscreate:astral-abyss_casing" },
+    "E": { "item": "chaoticscreate:elite_coil" },
+    "G": { "item": "chaoticscreate:astra-abyss_gear" }
+  },
+  "pattern": [
+    "AGA",
+    "ECE",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:astra-abyss_generator"
+  }
+}

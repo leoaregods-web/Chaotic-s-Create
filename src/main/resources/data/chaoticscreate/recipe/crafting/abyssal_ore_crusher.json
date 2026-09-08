@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": { "item": "chaoticscreate:advanced_coil" },
+    "G": { "item": "chaoticscreate:abyssal_iron_gear" },
+    "I": { "item": "chaoticscreate:abyssal_iron_ingot" },
+    "O": { "item": "minecraft:cobblestone" }
+  },
+  "pattern": [
+    "OIO",
+    "ICI",
+    "OGO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:abyssal_ore_crusher"
+  }
+}

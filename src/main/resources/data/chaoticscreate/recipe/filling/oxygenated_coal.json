@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:coal"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 250,
+      "fluid": "chaoticscreate:liquid_oxygen_source"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:oxygenated_coal"
+    }
+  ]
+}

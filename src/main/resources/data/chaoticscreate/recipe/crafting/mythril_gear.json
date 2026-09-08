@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "chaoticscreate:mythril_ingot"
+    },
+    "N": {
+      "item": "chaoticscreate:mythril_nugget"
+    }
+  },
+  "pattern": [
+    " X ",
+    "XNX",
+    " X "
+  ],
+  "result": {
+    "count": 2,
+    "id": "chaoticscreate:mythril_gear"
+  }
+}

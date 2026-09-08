@@ -1,0 +1,17 @@
+{
+  "type": "create:haunting",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:argon_capsule"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:bucket_of_liquid_space"
+    },
+    {
+      "id": "chaoticscreate:argon_capsule",
+      "chance": 0.5
+    }
+  ]
+}

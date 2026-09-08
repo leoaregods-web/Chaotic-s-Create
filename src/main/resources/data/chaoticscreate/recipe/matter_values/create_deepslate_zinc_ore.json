@@ -1,0 +1,16 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "create:deepslate_zinc_ore"
+    },
+    "matter": [
+        {
+            "type": "replication:metallic",
+            "amount": 10.0
+        },
+        {
+            "type": "replication:earth",
+            "amount": 3.0
+        }
+    ]
+}

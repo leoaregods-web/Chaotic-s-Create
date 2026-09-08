@@ -1,0 +1,20 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "pattern": [
+    "ACA",
+    "BFB",
+    "ADA"
+  ],
+  "key": {
+    "A": { "item": "chaoticscreate:astral_alloy" },
+    "B": { "item": "chaoticscreate:abyss_alloy" },
+    "C": { "item": "chaoticscreate:astral_casing" },
+    "D": { "item": "chaoticscreate:abyss_casing" },
+    "F": { "item": "create:fluid_tank" }
+  },
+  "result": {
+    "id": "chaoticscreate:atmosphere_liquifier",
+    "count": 1
+  }
+}

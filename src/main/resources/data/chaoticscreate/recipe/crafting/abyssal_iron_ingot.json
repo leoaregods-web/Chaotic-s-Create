@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": { "item": "chaoticscreate:abyssal_iron_nugget" }
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "chaoticscreate:abyssal_iron_ingot"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "chaoticscreate:item/abyssal_iron_ingot"
+  }
+}

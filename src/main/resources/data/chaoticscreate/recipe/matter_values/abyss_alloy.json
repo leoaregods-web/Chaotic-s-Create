@@ -1,0 +1,16 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:abyss_alloy"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 2.0
+    },
+    {
+      "type": "replication:earth",
+      "amount": 8.0
+    }
+  ]
+}

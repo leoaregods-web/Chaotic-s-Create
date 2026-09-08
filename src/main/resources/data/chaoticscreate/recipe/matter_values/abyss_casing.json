@@ -1,0 +1,20 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:abyss_casing"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 2.0
+    },
+    {
+      "type": "replication:earth",
+      "amount": 12.0
+    },
+    {
+      "type": "replication:organic",
+      "amount": 4.0
+    }
+  ]
+}

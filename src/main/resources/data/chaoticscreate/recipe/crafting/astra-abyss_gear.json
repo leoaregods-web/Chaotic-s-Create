@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "chaoticscreate:astra-abyss_ingot"
+    },
+    "N": {
+      "item": "chaoticscreate:astra-abyss_nugget"
+    }
+  },
+  "pattern": [
+    " X ",
+    "XNX",
+    " X "
+  ],
+  "result": {
+    "count": 2,
+    "id": "chaoticscreate:astra-abyss_gear"
+  }
+}

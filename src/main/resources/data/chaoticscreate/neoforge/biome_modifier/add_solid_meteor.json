@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "chaoticscreate:solid_meteor",
+  "step": "underground_decoration"
+}

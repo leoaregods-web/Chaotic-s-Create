@@ -1,0 +1,20 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:astral-abyss_casing"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 4.0
+    },
+    {
+      "type": "replication:earth",
+      "amount": 22.0
+    },
+    {
+      "type": "replication:organic",
+      "amount": 4.0
+    }
+  ]
+}

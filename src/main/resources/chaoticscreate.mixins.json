@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.com.chaos.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MechanicalPressBlockEntityMixin" 
+  ],
+  "client": [
+    "BeltRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

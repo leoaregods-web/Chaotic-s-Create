@@ -1,0 +1,16 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:elite_processor"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 56.0
+    },
+    {
+      "type": "replication:earth",
+      "amount": 12.0
+    }
+  ]
+}

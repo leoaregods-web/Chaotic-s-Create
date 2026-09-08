@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": { "item": "chaoticscreate:astra-abyss_ingot" },
+    "B": { "item": "chaoticscreate:shard_of_chaos" },
+    "C": { "item": "chaoticscreate:elite_processor" }
+  },
+  "pattern": [
+    " A ",
+    "BCB",
+    " A "
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:chaos_processor"
+  }
+}

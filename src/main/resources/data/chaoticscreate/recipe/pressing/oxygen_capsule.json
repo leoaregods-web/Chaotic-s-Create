@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:oxygen_capsule"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:ruptured_capsule"
+    }
+  ]
+}

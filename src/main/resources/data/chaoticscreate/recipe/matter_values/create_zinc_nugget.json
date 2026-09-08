@@ -1,0 +1,12 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "create:zinc_nugget"
+    },
+    "matter": [
+        {
+            "type": "replication:metallic",
+            "amount": 1.1
+        }
+    ]
+}

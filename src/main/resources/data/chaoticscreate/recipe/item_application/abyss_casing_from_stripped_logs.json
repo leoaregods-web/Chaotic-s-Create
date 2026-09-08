@@ -1,0 +1,16 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "tag": "c:stripped_logs"
+    },
+    {
+      "item": "chaoticscreate:abyss_alloy"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:abyss_casing"
+    }
+  ]
+}

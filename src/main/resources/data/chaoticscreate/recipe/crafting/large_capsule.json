@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "chaoticscreate:empty_capsule"
+    }
+  },
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:large_capsule"
+  }
+}

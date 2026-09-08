@@ -1,0 +1,8 @@
+{
+  "type": "chaoticscreate:chaos_reactor",
+  "left_input": { "item": { "item": "minecraft:coal" }, "count": 1 },
+  "right_input": {},
+  "results": [
+    { "fluid": "chaoticscreate:liquid_carbon_source", "amount": 500 }
+  ]
+}

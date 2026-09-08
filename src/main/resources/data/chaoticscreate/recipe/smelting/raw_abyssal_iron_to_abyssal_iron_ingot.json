@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "chaoticscreate:raw_abyssal_iron"
+  },
+  "result": {
+    "id": "chaoticscreate:abyssal_iron_ingot"
+  }
+}

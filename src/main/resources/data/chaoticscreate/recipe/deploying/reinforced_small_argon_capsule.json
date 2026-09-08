@@ -1,0 +1,18 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:small_argon_capsule"
+    },
+    {
+      "item": "create:brass_sheet"
+    }
+  ],
+  "keep_held_item": false,
+  "results": [
+    {
+    "id": "chaoticscreate:reinforced_small_argon_capsule",
+    "count": 1
+    }
+  ]
+}

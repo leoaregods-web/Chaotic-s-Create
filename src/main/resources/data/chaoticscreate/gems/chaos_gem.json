@@ -1,0 +1,72 @@
+{
+  "neoforge:conditions": [{ "type": "neoforge:mod_loaded", "modid": "apotheosis" }],
+  "type": "apotheosis:gem",
+  "weights": {
+    "quality": 1.5,
+    "weight": 0
+  },
+  "bonuses": [
+    {
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
+      "gem_class": {
+        "key": "chaos_weapon",
+        "types": ["apotheosis:melee_weapon", "apotheosis:bow", "apotheosis:trident"]
+      },
+      "modifiers": [
+        {
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "add_multiplied_total",
+          "values": {
+            "cracked": 0.08, "chipped": 0.14, "flawed": 0.20,
+            "normal": 0.28, "flawless": 0.36, "perfect": 0.45
+          }
+        },
+        {
+          "attribute": "apothic_attributes:life_steal",
+          "operation": "add_multiplied_base",
+          "values": {
+            "cracked": 0.02, "chipped": 0.03, "flawed": 0.045,
+            "normal": 0.06, "flawless": 0.075, "perfect": 0.09
+          }
+        }
+      ]
+    },
+    {
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
+      "gem_class": {
+        "key": "chaos_armor",
+        "types": ["apotheosis:helmet", "apotheosis:chestplate", "apotheosis:leggings", "apotheosis:boots"]
+      },
+      "modifiers": [
+        {
+          "attribute": "minecraft:generic.max_health",
+          "operation": "add_multiplied_base",
+          "values": {
+            "cracked": 0.05, "chipped": 0.1, "flawed": 0.15,
+            "normal": 0.2, "flawless": 0.28, "perfect": 0.38
+          }
+        },
+        {
+          "attribute": "minecraft:generic.gravity",
+          "operation": "add_multiplied_total",
+          "values": {
+            "cracked": -0.03, "chipped": -0.05, "flawed": -0.08,
+            "normal": -0.11, "flawless": -0.14, "perfect": -0.18
+          }
+        }
+      ]
+    },
+    {
+      "type": "apotheosis:attribute",
+      "attribute": "apothic_attributes:life_steal",
+      "gem_class": "apotheosis:shield",
+      "operation": "add_value",
+      "values": {
+        "cracked": 0.01, "chipped": 0.02, "flawed": 0.035,
+        "normal": 0.05, "flawless": 0.07, "perfect": 0.09
+      }
+    }
+  ]
+}

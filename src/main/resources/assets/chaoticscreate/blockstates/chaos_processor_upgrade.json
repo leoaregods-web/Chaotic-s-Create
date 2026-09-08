@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=up": { "model": "chaoticscreate:block/chaos_processor_upgrade", "x": 90},
+    "facing=down": { "model": "chaoticscreate:block/chaos_processor_upgrade", "x": -90},
+    "facing=north": { "model": "chaoticscreate:block/chaos_processor_upgrade", "y": 180},
+    "facing=south": { "model": "chaoticscreate:block/chaos_processor_upgrade"},
+    "facing=west": { "model": "chaoticscreate:block/chaos_processor_upgrade", "y": -270},
+    "facing=east": { "model": "chaoticscreate:block/chaos_processor_upgrade", "y": -90}
+  }
+}

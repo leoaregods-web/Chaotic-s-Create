@@ -1,0 +1,11 @@
+{
+  "type": "chaoticscreate:abyssalcrushing",
+  "ingredients": [
+    { "item": "chaoticscreate:raw_abyssal_iron" }
+  ],
+  "processing_time": 120,
+  "results": [
+    { "id": "chaoticscreate:abyssal_iron_ingot" },
+    { "chance": 0.35, "id": "chaoticscreate:abyssal_iron_nugget" }
+  ]
+}

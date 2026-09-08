@@ -1,0 +1,12 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:bucket_of_deep_water"
+  },
+  "matter": [
+    {
+      "type": "replication:earth",
+      "amount": 6.0
+    }
+  ]
+}

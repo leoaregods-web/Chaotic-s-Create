@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "chaoticscreate:empty_capsule"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 250,
+      "fluid": "chaoticscreate:liquid_nitrogen_source"
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:nitrogen_capsule"
+    }
+  ]
+}

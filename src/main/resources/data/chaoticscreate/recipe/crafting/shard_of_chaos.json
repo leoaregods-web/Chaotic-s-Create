@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "key": {
+    "A": {
+      "item": "chaoticscreate:astral_alloy"
+    },
+    "B": {
+      "item": "chaoticscreate:elite_coil"
+    },
+    "C": {
+      "item": "chaoticscreate:abyss_alloy"
+    },
+    "D": {
+      "item": "chaoticscreate:elite_processor"
+    },
+    "E": {
+      "item": "chaoticscreate:astra-abyss_ingot"
+    },
+    "F": {
+      "item": "chaoticscreate:oxygenated_coal"
+    },
+    "G": {
+      "item": "chaoticscreate:mythril_ingot"
+    },
+    "H": {
+      "item": "chaoticscreate:astra-abyss_gear"
+    },
+    "I": {
+      "item": "chaoticscreate:abyssal_iron_ingot"
+    }
+  },
+  "result": {
+    "id": "chaoticscreate:shard_of_chaos",
+    "count": 1
+  }
+}

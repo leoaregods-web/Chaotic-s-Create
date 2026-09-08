@@ -1,0 +1,12 @@
+{
+  "type": "replication:matter_value",
+  "input": {
+    "item": "chaoticscreate:raw_mythril"
+  },
+  "matter": [
+    {
+      "type": "replication:metallic",
+      "amount": 8.0
+    }
+  ]
+}

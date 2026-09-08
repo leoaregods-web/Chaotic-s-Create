@@ -1,0 +1,32 @@
+{
+  "entries": [
+    { "item": "chaoticscreate:raw_mythril", "emc": 128 },
+    { "item": "chaoticscreate:mythril_ore", "emc": 128 },
+    { "item": "chaoticscreate:mythril_ingot", "emc": 252 },
+    { "item": "chaoticscreate:mythril_nugget", "emc": 28 },
+    { "item": "chaoticscreate:mythril_gear", "emc": 1024 },
+    { "item": "chaoticscreate:astral_casing", "emc": 1024 },
+    { "item": "chaoticscreate:basic_coil", "emc": 312 },
+    { "item": "chaoticscreate:basic_processor", "emc": 2048 },
+    { "item": "chaoticscreate:raw_abyssal_iron", "emc": 512 },
+    { "item": "chaoticscreate:abyssal_iron_ore", "emc": 512 },
+    { "item": "chaoticscreate:abyssal_iron_ingot", "emc": 1026 },
+    { "item": "chaoticscreate:abyssal_iron_nugget", "emc": 114 },
+    { "item": "chaoticscreate:abyssal_iron_gear", "emc": 4096 },
+    { "item": "chaoticscreate:abyss_casing", "emc": 4096 },
+    { "item": "chaoticscreate:advanced_coil", "emc": 1251 },
+    { "item": "chaoticscreate:advanced_processor", "emc": 6144 },
+    { "item": "chaoticscreate:astra_abyss_ingot", "emc": 1476 },
+    { "item": "chaoticscreate:astra_abyss_nugget", "emc": 164 },
+    { "item": "chaoticscreate:astra_abyss_gear", "emc": 5888 },
+    { "item": "chaoticscreate:astral_abyss_casing", "emc": 5888 },
+    { "item": "chaoticscreate:elite_coil", "emc": 1799 },
+    { "item": "chaoticscreate:elite_processor", "emc": 10000 },
+    { "item": "chaoticscreate:nitrogen_capsule", "emc": 268 },
+    { "item": "chaoticscreate:oxygen_capsule", "emc": 280 },
+    { "item": "chaoticscreate:argon_capsule", "emc": 448 },
+    { "item": "chaoticscreate:oxygenated_coal", "emc": 152 },
+    { "item": "chaoticscreate:abyss_alloy", "emc": 48 },
+    { "item": "chaoticscreate:astral_alloy", "emc": 48 }
+  ]
+}

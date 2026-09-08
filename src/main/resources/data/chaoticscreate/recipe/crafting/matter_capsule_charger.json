@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": { "item": "chaoticscreate:abyss_casing" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "P": { "item": "minecraft:iron_bars" }
+  },
+  "pattern": [
+    "CPC",
+    "PIP",
+    "CPC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "chaoticscreate:matter_capsule_charger"
+  }
+}

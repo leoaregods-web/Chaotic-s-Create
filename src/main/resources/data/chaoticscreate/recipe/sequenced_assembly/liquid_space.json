@@ -1,0 +1,54 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "chaoticscreate:bucket_of_deep_water"
+  },
+  "transitional_item": {
+    "id": "chaoticscreate:incomplete_bucket_of_liquid_space"
+  },
+  "sequence": [
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "chaoticscreate:incomplete_bucket_of_liquid_space"
+        },
+        {
+          "type": "neoforge:components",
+          "amount": 250,
+          "components": {
+            "create:potion_fluid_bottle_type": "regular",
+            "minecraft:potion_contents": {
+              "potion": "minecraft:slow_falling"
+            }
+          },
+          "fluids": "create:potion"
+        }
+      ],
+      "results": [
+        {
+          "id": "chaoticscreate:incomplete_bucket_of_liquid_space"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "chaoticscreate:incomplete_bucket_of_liquid_space"
+        }
+      ],
+      "results": [
+        {
+          "id": "chaoticscreate:incomplete_bucket_of_liquid_space"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "chaoticscreate:bucket_of_liquid_space"
+    }
+  ],
+  "loops": 4
+}

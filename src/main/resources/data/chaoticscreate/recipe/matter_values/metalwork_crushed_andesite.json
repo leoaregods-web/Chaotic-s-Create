@@ -1,0 +1,12 @@
+{
+    "type": "replication:matter_value",
+    "input": {
+        "item": "createmetalwork:crushed_andesite"
+    },
+    "matter": [
+        {
+            "type": "replication:earth",
+            "amount": 4.0
+        }
+    ]
+}

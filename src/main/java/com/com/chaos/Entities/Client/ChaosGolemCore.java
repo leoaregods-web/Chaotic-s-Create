@@ -224,8 +224,33 @@ public class ChaosGolemCore<T extends ChaosGolemEntity> extends HierarchicalMode
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animate(entity.idleAnimationState, ChaosGolemCoreAnimation.IdleCore, ageInTicks, 1.0F);
+
+        // rings spin faster each phase (1x / 1.75x / 2.5x) - reuses the existing IdleCore keyframes,
+        // no new animation needed, since animate()'s last param is a playback speed multiplier
+        float phaseAnimSpeed = 1.0F + (entity.getPhase() - 1) * 0.75F;
+        this.animate(entity.idleAnimationState, ChaosGolemCoreAnimation.IdleCore, ageInTicks, phaseAnimSpeed);
         this.animate(entity.deathAnimationState, ChaosGolemCoreAnimation.DeathCore, ageInTicks, 1.0F);
+
+        this.applyPhaseSpread(entity.getPhase());
+    }
+
+    private void applyPhaseSpread(int phase) {
+        if (phase <= 1) {
+            return; // phase 1 is the authored default pose - nothing to adjust
+        }
+
+        // rings pull apart from the core each phase - reads as the boss "opening up" as it gets angrier
+        float ringSpread = (phase - 1) * 2.0F;
+        this.Ring1.x -= ringSpread;
+        this.Ring2.x += ringSpread;
+
+        // core shards scale outward from the center by the same fraction each phase, on top of
+        // whatever pose the idle/death animation already put them in this frame
+        float shardSpreadFactor = 1.0F + (phase - 1) * 0.12F;
+        this.Core.getAllParts().forEach(part -> {
+            part.x *= shardSpreadFactor;
+            part.z *= shardSpreadFactor;
+        });
     }
 
     @Override

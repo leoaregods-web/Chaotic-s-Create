@@ -1,5 +1,7 @@
 package com.com.chaos.Entities;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -62,8 +64,21 @@ public class ChaosGolemAttackGoal extends Goal {
             // close enough - land the hit, then immediately hand control back to the flight goal
             this.golem.swing(InteractionHand.MAIN_HAND);
             this.golem.doHurtTarget(target);
+            this.spawnImpactParticles(target);
             this.golem.setAttackCooldown(70); // ~3.5s before it's willing to re-engage
             this.attackTimeoutTicks = 0;
         }
+    }
+
+    private void spawnImpactParticles(LivingEntity target) {
+        if (!(this.golem.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK,
+                target.getX(), target.getY() + target.getBbHeight() * 0.5D, target.getZ(),
+                1, 0.0D, 0.0D, 0.0D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.CRIT,
+                target.getX(), target.getY() + target.getBbHeight() * 0.5D, target.getZ(),
+                12, 0.3D, 0.3D, 0.3D, 0.2D);
     }
 }

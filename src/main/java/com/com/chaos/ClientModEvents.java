@@ -6,6 +6,7 @@ import com.com.chaos.Blocks.ModBlockEntities;
 import com.com.chaos.Blocks.Multiblock.GaseousConverter.ChaosTurbineRenderer;
 import com.com.chaos.Blocks.Multiblock.Reactor.ChaosReactorContentsRenderer;
 import com.com.chaos.Blocks.ProcessorInscriberRenderer;
+import com.com.chaos.Entities.ChaosBoltEntity;
 import com.com.chaos.Entities.ChaosGolemEntity;
 import com.com.chaos.Entities.Client.ChaosGolemCore;
 import com.com.chaos.Entities.Client.ChaosGolemRenderer;
@@ -50,6 +51,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.CHAOS_TURBINE.get(), ChaosTurbineRenderer::new);
         event.registerEntityRenderer((EntityType) ModEntities.THROWN_CAPSULE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer((EntityType<ChaosGolemEntity>) ModEntities.CHAOS_GOLEM.get(), ChaosGolemRenderer::new);
+        event.registerEntityRenderer(ModEntities.CHAOS_BOLT.get(), context -> new ThrownItemRenderer<>(context));
         event.registerBlockEntityRenderer(ModBlockEntities.CHAOS_CRYSTAL.get(), ChaosReactorContentsRenderer::new);
     }
 }

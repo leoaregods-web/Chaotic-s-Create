@@ -4,9 +4,12 @@ import com.com.chaos.Entities.ChaosGolemAttackGoal;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -33,13 +36,64 @@ public class ChaosGolemEntity extends PathfinderMob implements Enemy {
     public final AnimationState deathAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
     private int attackCooldown = 0;
+    private int rangedAttackCooldown = 0;
+    private int flightParticleTimer = 0; // throttles trail particles so it's not spamming packets every tick
+    private int phase = 1; // 1 = calm, 2 = aggressive (<=66% hp), 3 = enraged (<=33% hp)
 
     public int getAttackCooldown() {
         return this.attackCooldown;
     }
 
     public void setAttackCooldown(int ticks) {
-        this.attackCooldown = ticks;
+        // scaling here (rather than in the goal classes) means both attack goals automatically
+        // speed up in later phases without either of them needing to know about phases at all
+        this.attackCooldown = Math.round(ticks * this.getPhaseCooldownMultiplier());
+    }
+
+    public int getRangedAttackCooldown() {
+        return this.rangedAttackCooldown;
+    }
+
+    public void setRangedAttackCooldown(int ticks) {
+        this.rangedAttackCooldown = Math.round(ticks * this.getPhaseCooldownMultiplier());
+    }
+
+    public int getPhase() {
+        return this.phase;
+    }
+
+    // phase 1 = 100% of the goals' normal cooldowns, phase 2 = 75%, phase 3 = 55% - tune to taste
+    private float getPhaseCooldownMultiplier() {
+        return switch (this.phase) {
+            case 3 -> 0.55F;
+            case 2 -> 0.75F;
+            default -> 1.0F;
+        };
+    }
+
+    private void updatePhase() {
+        float healthFraction = this.getHealth() / this.getMaxHealth();
+        int newPhase = 1;
+        if (healthFraction <= 0.33F) {
+            newPhase = 3;
+        } else if (healthFraction <= 0.66F) {
+            newPhase = 2;
+        }
+
+        if (newPhase != this.phase) {
+            this.phase = newPhase;
+            this.onPhaseChange(newPhase);
+        }
+    }
+
+    private void onPhaseChange(int newPhase) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
+                    this.getX(), this.getY() + this.getBbHeight() * 0.5D, this.getZ(),
+                    40, 1.0D, 1.0D, 1.0D, 0.2D);
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 1.0F, 0.7F + (newPhase - 1) * 0.15F);
+        }
     }
 
     private BlockPos flightAnchor;
@@ -66,8 +120,9 @@ public class ChaosGolemEntity extends PathfinderMob implements Enemy {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ChaosGolemAttackGoal(this));
-        this.goalSelector.addGoal(2, new ChaosGolemFlightGoal(this));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new ChaosGolemRangedAttackGoal(this));
+        this.goalSelector.addGoal(3, new ChaosGolemFlightGoal(this));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
     @Override
@@ -97,17 +152,25 @@ public class ChaosGolemEntity extends PathfinderMob implements Enemy {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.WARDEN_AMBIENT;
+        // dragon-scale ambience reads as "big flying boss" without borrowing the Warden's identity
+        return SoundEvents.ENDER_DRAGON_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.WARDEN_HURT;
+        // ties the hurt sound back to "golem" even though the ambient sound is dragon-y
+        return SoundEvents.IRON_GOLEM_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.WARDEN_DEATH;
+        return SoundEvents.WITHER_DEATH;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        // pitched down from the default random 0.8-1.2 range - makes it sound heavier/older, less "mob-y"
+        return 0.6F + this.random.nextFloat() * 0.15F;
     }
 
     @Override
@@ -144,10 +207,36 @@ public class ChaosGolemEntity extends PathfinderMob implements Enemy {
             if (this.attackCooldown > 0) {
                 this.attackCooldown--;
             }
+            if (this.rangedAttackCooldown > 0) {
+                this.rangedAttackCooldown--;
+            }
+            this.updatePhase();
             this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+
+            if (--this.flightParticleTimer <= 0) {
+                this.flightParticleTimer = 3; // every 3 ticks - visible trail without flooding nearby clients
+                this.spawnFlightTrailParticles();
+            }
         } else {
             this.setupAnimationStates();
         }
+    }
+
+    private void spawnFlightTrailParticles() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        // two symmetric points near the "shoulders" so the trail reads as coming off the body, not the center
+        double offsetX = Math.cos(Math.toRadians(this.getYRot() + 90.0F)) * 1.2D;
+        double offsetZ = Math.sin(Math.toRadians(this.getYRot() + 90.0F)) * 1.2D;
+        double baseY = this.getY() + this.getBbHeight() * 0.6D;
+
+        serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
+                this.getX() + offsetX, baseY, this.getZ() + offsetZ,
+                1, 0.05D, 0.05D, 0.05D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
+                this.getX() - offsetX, baseY, this.getZ() - offsetZ,
+                1, 0.05D, 0.05D, 0.05D, 0.0D);
     }
 
     private void setupAnimationStates() {
@@ -165,6 +254,14 @@ public class ChaosGolemEntity extends PathfinderMob implements Enemy {
 
     @Override
     public void die(DamageSource damageSource) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER,
+                    this.getX(), this.getY() + this.getBbHeight() * 0.5D, this.getZ(),
+                    1, 0.0D, 0.0D, 0.0D, 0.0D);
+            serverLevel.sendParticles(ParticleTypes.REVERSE_PORTAL,
+                    this.getX(), this.getY() + this.getBbHeight() * 0.5D, this.getZ(),
+                    60, 1.2D, 1.0D, 1.2D, 0.15D);
+        }
         super.die(damageSource);
         this.bossEvent.removeAllPlayers();
     }

@@ -27,6 +27,13 @@ public class ModEntities {
                     .updateInterval(3)
                     .build(String.valueOf(ResourceKey.create(Registries.ENTITY_TYPE, registryName))));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ChaosBoltEntity>> CHAOS_BOLT = ENTITY_TYPES.register("chaos_bolt",
+            registryName -> EntityType.Builder.<ChaosBoltEntity>of(ChaosBoltEntity::new, MobCategory.MISC)
+                    .sized(0.35f, 0.35f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(String.valueOf(ResourceKey.create(Registries.ENTITY_TYPE, registryName))));
+
     public static void register(IEventBus modBus) {
         ENTITY_TYPES.register(modBus);
     }

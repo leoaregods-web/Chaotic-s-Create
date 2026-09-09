@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
@@ -107,116 +106,31 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         }
 
         if (be.isController && be.structureValid) {
-            if (be.isGaseousConverter) {
-                be.processGaseousConverter(level, pos); // Route to your new custom machine processing logic
-            } else {
+            {
                 be.processRecipes(level, pos); // Fallback to Reactor processing
             }
         }
     }
-
-    private void processGaseousConverter(Level level, BlockPos pos) {
-        // 1. Query your caching pressure manager instance
-        float pressureRatio = com.com.chaos.Pressure.PressureManager.get(level).getPressureRatio(level, pos);
-        com.com.chaos.Pressure.PressureRatio.Tier pressureTier = com.com.chaos.Pressure.PressureRatio.tierOf(pressureRatio);
-
-        // 2. Fetch the current fluid state from the controller tank
-        FluidStack internalFluid = this.fluidBuffer.getFluid();
-
-        // 3. System Fallback: If empty or inside a vacuum room, zero out the mechanics safely
-        if (internalFluid.isEmpty() || pressureTier == com.com.chaos.Pressure.PressureRatio.Tier.VACUUM) {
-            updateKineticOutput(level, 0, 0);
-            return;
-        }
-
-        // 4. MODE A: Check for Replication Matter Recipe processing (Consumes Gas)
-        // We create an input wrapper using the controller's items and liquids
-        ChaosReactorRecipeInput recipeInput = new ChaosReactorRecipeInput(
-                this.itemBuffer.getStackInSlot(0), internalFluid,
-                ItemStack.EMPTY, FluidStack.EMPTY
-        );
-
-        Optional<RecipeHolder<ChaosReactorRecipe>> matchedRecipe = level.getRecipeManager()
-                .getRecipeFor(ModChaosReactorRecipes.CHAOS_REACTOR_TYPE.get(), recipeInput, level);
-
-        if (matchedRecipe.isPresent()) {
-            // Drop torque immediately while actively synthesizing solid items
-            updateKineticOutput(level, 0, 0);
-
-            if (--processCooldown <= 0) {
-                processCooldown = PROCESS_INTERVAL_TICKS;
-                ChaosReactorRecipe recipe = matchedRecipe.get().value();
-                List<ItemStack> slotResults = new java.util.ArrayList<>(recipe.getItemResults());
-                slotResults.addAll(recipe.getCapsuleResults());
-                FluidStack fluidResult = recipe.getFluidResult();
-
-                if (canAcceptResults(slotResults, fluidResult)) {
-                    // Consume inputs from the controller's own slots
-                    this.itemBuffer.extractItem(0, recipe.leftInput().itemCount(), false);
-                    if (recipe.leftInput().fluid().isPresent()) {
-                        this.fluidBuffer.drain(recipe.leftInput().fluid().get().getAmount(), IFluidHandler.FluidAction.EXECUTE);
-                    }
-
-                    // Distribute results into output buffers
-                    for (int i = 0; i < slotResults.size() && i < 2; i++) {
-                        ItemStack result = slotResults.get(i);
-                        ItemStack existing = itemBuffer.getStackInSlot(i);
-                        if (existing.isEmpty()) {
-                            itemBuffer.setStackInSlot(i, result.copy());
-                        } else {
-                            existing.grow(result.getCount());
-                        }
-                    }
-                    setChanged();
-                }
-            }
-            return;
-        }
-
-        // 5. MODE B: Atmospheric Kinetic Driver Mode (Does not consume gas)
-        float targetRPM = 0;
-        float targetSU = 0;
-
-        // Dynamically scale Create engine torque properties depending on the severity of the room pressure
-        switch (pressureTier) {
-            case LOW -> { targetRPM = 16; targetSU = 256; }
-            case NORMAL -> { targetRPM = 32; targetSU = 512; }
-            case HIGH -> { targetRPM = 64; targetSU = 1024; }
-            case CRUSHING -> { targetRPM = 128; targetSU = 2048; }
-            default -> {}
-        }
-
-        updateKineticOutput(level, targetRPM, targetSU);
-    }
-
 
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ChaosCrystalBlockEntity be) {
         // The contents renderer reads isController()/isStructureValid()/getDisplayFluid()/
         // getDisplayItem() directly each frame - nothing needed here.
     }
-    private boolean isGaseousConverter = false;
-
-    public boolean isGaseousConverter() {
-        return isGaseousConverter && structureValid;
-    }
 
     private void revalidate(Level level, BlockPos pos) {
         Direction foundReactor = ChaosReactorStructure.findValidFacing(level, pos);
 
-        Direction foundConverter = com.com.chaos.Blocks.Multiblock.GaseousConverter.GaseousConverterStructure.findValidFacing(level, pos);
-
-        Direction found = foundReactor != null ? foundReactor : foundConverter;
+        Direction found = foundReactor;
         boolean nowController = found != null;
 
         if (DEBUG_LOGGING && !nowController && !isController) {
             logFirstMismatch(level, pos, facing);
         }
 
-        if (nowController != isController || (found != null && found != facing) || (foundConverter != null) != isGaseousConverter) {
+        if (nowController != isController(found != null && found != facing)){
             isController = nowController;
             structureValid = nowController;
-            isGaseousConverter = (foundConverter != null); // Track if it's the converter
 
             if (found != null) {
                 facing = found;
@@ -225,8 +139,6 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
             level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
 
             if (nowController) {
-                debug("Structure VALID - " + (isGaseousConverter ? "Gaseous Converter" : "Reactor") + " controller, facing " + facing);
-            } else {
                 debug("Structure INVALID - no longer controller");
             }
         }
@@ -404,7 +316,7 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
     // Accessors for capabilities and the contents renderer
     // ------------------------------------------------------------------
 
-    public boolean isController() {
+    public boolean isController(boolean b) {
         return isController;
     }
 
@@ -453,33 +365,6 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         }
     }
 
-
-    @Override
-    public float getGeneratedSpeed() {
-        // If the machine breaks or switches to a non-kinetic role, speed drops to 0 immediately
-        if (this.structureValid && this.isGaseousConverter) {
-            return this.currentGeneratedSpeed;
-        }
-        return 0;
-    }
-
-    @Override
-    public float calculateAddedStressCapacity() {
-        if (this.structureValid && this.isGaseousConverter) {
-            return this.currentGeneratedStress;
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean isSource() {
-        // Tells Create's algorithm that this block entity actively produces kinetic energy
-        return this.structureValid && this.isGaseousConverter && this.currentGeneratedSpeed != 0;
-    }
-
-
-
-
     // ------------------------------------------------------------------
     // Persistence
     // ------------------------------------------------------------------
@@ -498,7 +383,6 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         // Save your custom multiblock pressure and kinetic physics states
         tag.putFloat("CurrentGeneratedSpeed", currentGeneratedSpeed);
         tag.putFloat("CurrentGeneratedStress", currentGeneratedStress);
-        tag.putBoolean("IsGaseousConverter", isGaseousConverter);
     }
 
     @Override
@@ -516,6 +400,5 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         // Load your custom states
         currentGeneratedSpeed = tag.getFloat("CurrentGeneratedSpeed");
         currentGeneratedStress = tag.getFloat("CurrentGeneratedStress");
-        isGaseousConverter = tag.getBoolean("IsGaseousConverter");
     }
 }

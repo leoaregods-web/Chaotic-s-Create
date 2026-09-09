@@ -36,9 +36,6 @@ public class ChaosReactorContentsRenderer implements BlockEntityRenderer<ChaosCr
     @Override
     public void render(ChaosCrystalBlockEntity be, float partialTick, PoseStack poseStack,
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        if (!be.isController() || !be.isStructureValid()) {
-            return;
-        }
 
         BlockPos anchor = be.getBlockPos();
         Direction facing = be.getFacing();

@@ -63,6 +63,9 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChaosCrystalBlockEntity>> CHAOS_CRYSTAL =
             BLOCK_ENTITY_TYPES.register("chaos_crystal",
                     () -> BlockEntityType.Builder.of(ChaosCrystalBlockEntity::new, ModBlocks.CHAOS_CRYSTALS.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PressurizedAbyssalIronBlockEntity>> PRESSURIZED_ABYSSAL_IRON_BLOCK =
+            BLOCK_ENTITY_TYPES.register("pressurized_abyssal_iron_block",
+                    () -> BlockEntityType.Builder.of(PressurizedAbyssalIronBlockEntity::new, ModBlocks.PRESSURIZED_ABYSSAL_IRON_BLOCK.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITY_TYPES.register(modBus);

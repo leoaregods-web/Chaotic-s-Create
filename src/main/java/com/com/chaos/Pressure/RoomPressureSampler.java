@@ -14,12 +14,14 @@ import java.util.Set;
  * Stateless flood-fill sampler. Starting from a seed position it explores the connected pocket of
  * passable space (air, and anything else with no collision - matches the usual "sealed room"
  * convention other atmosphere-style mods use) and tallies which sides of that pocket touch Deep
- * Water, Liquid Space, or plain solid boundary.
+ * Water, Liquid Space, plain solid boundary, or an active {@link PressureSource} machine.
  * <p>
  * Deep Water / Liquid Space block the flood fill just like a solid wall would - the fill will never
  * path through them - but their exposed faces contribute pressure to the room they border. Put them
  * in tanks, pipes, or membrane blocks wrapped around a chamber; you don't need to flood the interior
- * itself for it to be affected.
+ * itself for it to be affected. A boundary block whose block entity implements
+ * {@link PressureSource} is checked first and contributes its own signed weight instead of being
+ * classified by fluid state, so a machine doesn't need to be a fluid to move the room's pressure.
  * <p>
  * This is a lightweight approximation (single BFS pass, capped volume), not a full gas simulation -
  * that's intentional, since it needs to run cheaply from block entity ticks.
@@ -42,6 +44,8 @@ public final class RoomPressureSampler {
         long deepWaterFaces = 0;
         long spaceFaces = 0;
         long plainFaces = 0;
+        long machineFaces = 0;
+        float machineContribution = 0f;
         boolean sealed = true;
 
         while (!queue.isEmpty()) {
@@ -71,6 +75,14 @@ public final class RoomPressureSampler {
                 }
 
                 // Boundary cell - classify what it's made of rather than exploring into it.
+                // An active machine takes priority over fluid state: a Deep Water tank behind a
+                // compressor's casing shouldn't also get counted as a plain fluid face.
+                if (level.getBlockEntity(neighbor) instanceof PressureSource source) {
+                    machineFaces++;
+                    machineContribution += source.getPressureContribution();
+                    continue;
+                }
+
                 FluidType type = level.getFluidState(neighbor).getFluidType();
                 if (type == ModFluids.LIQUID_TYPE.get()) {
                     deepWaterFaces++;
@@ -82,7 +94,7 @@ public final class RoomPressureSampler {
             }
         }
 
-        return new Result(sealed, visited, deepWaterFaces, spaceFaces, plainFaces);
+        return new Result(sealed, visited, deepWaterFaces, spaceFaces, plainFaces, machineFaces, machineContribution);
     }
 
     private static boolean isPassable(Level level, BlockPos pos) {
@@ -93,18 +105,18 @@ public final class RoomPressureSampler {
     }
 
     public record Result(boolean sealed, Set<BlockPos> interior, long deepWaterFaces, long spaceFaces,
-                          long plainFaces) {
+                          long plainFaces, long machineFaces, float machineContribution) {
 
         public long totalBoundaryFaces() {
-            return deepWaterFaces + spaceFaces + plainFaces;
+            return deepWaterFaces + spaceFaces + plainFaces + machineFaces;
         }
 
         public float toPressureRatio() {
             if (!sealed || totalBoundaryFaces() == 0) {
                 return PressureRatio.NORMAL;
             }
-            long net = deepWaterFaces - spaceFaces;
-            float swing = (net / (float) totalBoundaryFaces()) * PressureRatio.MAX_SWING;
+            float net = (deepWaterFaces - spaceFaces) + machineContribution;
+            float swing = (net / totalBoundaryFaces()) * PressureRatio.MAX_SWING;
             return PressureRatio.clamp(PressureRatio.NORMAL + swing);
         }
     }

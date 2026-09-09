@@ -1,6 +1,7 @@
 package com.com.chaos.Blocks.Multiblock.GaseousConverter;
 
 import com.com.chaos.Blocks.ModBlockEntities;
+import com.com.chaos.Pressure.PressureManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -102,6 +103,7 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, neighborPos, movedByPiston);
         if (!level.isClientSide) {
+            PressureManager.get(level).invalidate(pos);
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof ChaosTurbineBlockEntity turbine) {
                 turbine.requestRevalidate();

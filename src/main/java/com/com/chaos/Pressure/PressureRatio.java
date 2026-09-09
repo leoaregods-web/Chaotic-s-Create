@@ -28,6 +28,14 @@ public final class PressureRatio {
     /** How far a wall that is 100% Deep Water or 100% Liquid Space can swing the ratio away from NORMAL. */
     public static final float MAX_SWING = 3.0f;
 
+    /**
+     * How much a room's actual (felt) pressure can move toward its target ratio per tick, once
+     * something - a placed fluid, a machine turning on - shifts what the target is. At this rate
+     * a full {@link #MAX_SWING} shift takes about 5 seconds (100 ticks) to complete, so pressure
+     * ramps rather than snapping. See {@link PressureManager} for where this is applied.
+     */
+    public static final float DRIFT_PER_TICK = 0.03f;
+
     // Named bands - use these instead of magic numbers when a block decides how to react.
     public static final float VACUUM_THRESHOLD = 0.25f;
     public static final float LOW_THRESHOLD = 0.75f;

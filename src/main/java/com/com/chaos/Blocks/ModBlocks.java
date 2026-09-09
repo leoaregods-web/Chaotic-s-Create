@@ -39,6 +39,12 @@ public class ModBlocks {
                     AstralAbyssCasing::new,
                     BlockBehaviour.Properties.of().strength(1.5f, 6.0f)
             );
+    public static final DeferredBlock<PressurizedAbyssalIronBlock> PRESSURIZED_ABYSSAL_IRON_BLOCK =
+            BLOCKS.registerBlock(
+                "pressurized_abyssal_iron_block",
+                    PressurizedAbyssalIronBlock::new,
+                    BlockBehaviour.Properties.of().strength(1.5f, 12)
+            );
 
     public static final DeferredBlock<AtmosphereLiquifierBlock> ATMOSPHERE_LIQUIFIER =
             BLOCKS.registerBlock("atmosphere_liquifier", AtmosphereLiquifierBlock::new, BlockBehaviour.Properties.of().strength(1.5f, 6.0f).noOcclusion().sound(SoundType.METAL));
@@ -102,6 +108,8 @@ public class ModBlocks {
             BLOCKITEMS.registerSimpleBlockItem(CHAOS_TURBINE);
     public static final DeferredItem<BlockItem> FLUID_REPLICATOR_ITEM =
             BLOCKITEMS.registerSimpleBlockItem(FLUID_REPLICATOR);
+    public static final DeferredItem<BlockItem> PRESSURIZED_ABYSSAL_IRON_BLOCK_ITEM =
+            BLOCKITEMS.registerSimpleBlockItem(PRESSURIZED_ABYSSAL_IRON_BLOCK);
     public static final DeferredBlock<BasicProcessorUpgradeBlock> BASIC_PROCESSOR_UPGRADE =
             BLOCKS.registerBlock("basic_processor_upgrade", BasicProcessorUpgradeBlock::new,
                     BlockBehaviour.Properties.of().noCollission().strength(0.5f).sound(SoundType.METAL));

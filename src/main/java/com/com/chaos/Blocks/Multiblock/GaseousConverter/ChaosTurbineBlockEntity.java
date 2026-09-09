@@ -5,7 +5,9 @@ import com.buuz135.replication.api.matter_fluid.MatterTank;
 import com.com.chaos.Blocks.ModBlockEntities;
 import com.com.chaos.Matter.ModMatterTypes;
 import com.com.chaos.ModTags;
+import com.com.chaos.Pressure.PressureAware;
 import com.com.chaos.Pressure.PressureManager;
+import com.com.chaos.Pressure.PressureRatio;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -29,7 +31,7 @@ import javax.annotation.Nullable;
  * RotationPropagator. That lets Create own source/network creation and
  * teardown while we only provide the generated speed through getGeneratedSpeed().
  */
-public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
+public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity implements PressureAware {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     private static final int REVALIDATE_INTERVAL_TICKS = 10;
@@ -39,8 +41,8 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
     public static final double MATTER_TANK_CAPACITY = 4000;
 
     // Balance knobs.
-    private static final float SPEED_PER_PRESSURE = 32f;
-    private static final float STRESS_PER_PRESSURE = 16f;
+    private static final float SPEED_PER_PRESSURE = 1024f;
+private static final float STRESS_PER_PRESSURE = SPEED_PER_PRESSURE / 2;
     private static final double GAS_MB_PER_MATTER = 10.0;
     private static final double MATTER_PER_TICK = 1.0;
 
@@ -67,6 +69,7 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
 
     private float currentGeneratedSpeed;
     private float currentGeneratedStress;
+    private float currentPressureRatio = PressureRatio.NORMAL;
 
     /** Last structure signature logged, so a broken structure does not spam the log every 10 ticks. */
     private String lastStructureLog = "";
@@ -92,6 +95,25 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
         return facing;
     }
 
+    @Override
+    public void onPressureUpdated(float pressureRatio) {
+        currentPressureRatio = pressureRatio;
+    }
+
+    public float getPressureRatio() {
+        return currentPressureRatio;
+    }
+
+    @Override
+    public float minOperatingPressure() {
+        return PressureRatio.VACUUM_THRESHOLD;
+    }
+
+    @Override
+    public float maxOperatingPressure() {
+        return PressureRatio.CRUSHING_THRESHOLD;
+    }
+
     public static void serverTick(
             Level level,
             BlockPos pos,
@@ -105,6 +127,7 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
         }
 
         if (be.isController && be.structureValid) {
+            be.onPressureUpdated(PressureManager.get(level).getPressureRatio(level, pos));
             be.process(level, pos);
         }
     }
@@ -168,12 +191,11 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     private void generateRotation(Level level, BlockPos pos) {
-        if (gasAvailableAcrossCells(level, pos) <= 0) {
+        if (gasAvailableAcrossCells(level, pos) <= 0 || !isWithinOperatingRange(currentPressureRatio)) {
             setKineticOutput(0, 0);
             return;
         }
-        float pressureRatio = PressureManager.get(level).getPressureRatio(level, pos);
-        setKineticOutput(pressureRatio * SPEED_PER_PRESSURE, pressureRatio * STRESS_PER_PRESSURE);
+        setKineticOutput(currentPressureRatio * SPEED_PER_PRESSURE, currentPressureRatio * STRESS_PER_PRESSURE);
     }
 
     private void generateMatter(Level level, BlockPos pos) {
@@ -218,6 +240,8 @@ public class ChaosTurbineBlockEntity extends GeneratingKineticBlockEntity {
         sb.append(", facing=").append(facing);
 
         if (isController && structureValid) {
+            sb.append(", pressure=").append(currentPressureRatio)
+                    .append(" (").append(PressureRatio.tierOf(currentPressureRatio)).append(")");
             sb.append(", speed=").append(currentGeneratedSpeed);
             sb.append(", stress=").append(currentGeneratedStress);
             sb.append(", hasSource=").append(hasSource());

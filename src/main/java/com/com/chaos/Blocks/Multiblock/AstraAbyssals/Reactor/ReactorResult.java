@@ -1,4 +1,4 @@
-package com.com.chaos.Blocks.Multiblock.Reactor;
+package com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor;
 
 import com.com.chaos.ModDataComponents;
 import com.mojang.serialization.Codec;

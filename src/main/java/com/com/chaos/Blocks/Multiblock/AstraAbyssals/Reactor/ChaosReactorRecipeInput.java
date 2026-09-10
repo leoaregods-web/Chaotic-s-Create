@@ -1,4 +1,4 @@
-package com.com.chaos.Blocks.Multiblock.Reactor;
+package com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;

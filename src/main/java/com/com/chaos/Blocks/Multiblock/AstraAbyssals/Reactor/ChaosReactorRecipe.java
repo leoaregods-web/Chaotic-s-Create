@@ -1,4 +1,4 @@
-package com.com.chaos.Blocks.Multiblock.Reactor;
+package com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

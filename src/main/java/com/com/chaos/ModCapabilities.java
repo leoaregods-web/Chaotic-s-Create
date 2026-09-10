@@ -2,7 +2,7 @@ package com.com.chaos;
 
 import com.buuz135.replication.ReplicationRegistry;
 import com.com.chaos.Blocks.ModBlockEntities;
-import com.com.chaos.Blocks.Multiblock.Reactor.ChaosCrystalBlockEntity;
+import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ChaosCrystalBlockEntity;
 import com.com.chaos.Items.ModItems;
 import com.com.chaos.Recipes.ModFluidReplicatorRegistry;
 import net.minecraft.core.Direction;

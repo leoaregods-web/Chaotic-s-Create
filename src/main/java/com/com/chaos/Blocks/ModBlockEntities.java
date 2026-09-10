@@ -1,9 +1,8 @@
 package com.com.chaos.Blocks;
 
 import com.com.chaos.Blocks.FluidReplicator.FluidReplicatorBlockEntity;
-import com.com.chaos.Blocks.Multiblock.GaseousConverter.ChaosTurbineBlock;
-import com.com.chaos.Blocks.Multiblock.GaseousConverter.ChaosTurbineBlockEntity;
-import com.com.chaos.Blocks.Multiblock.Reactor.ChaosCrystalBlockEntity;
+import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.ChaosTurbineBlockEntity;
+import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ChaosCrystalBlockEntity;
 import com.com.chaos.ChaoticsCreate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;

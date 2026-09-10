@@ -1,4 +1,4 @@
-package com.com.chaos.Blocks.Multiblock.GaseousConverter;
+package com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter;
 
 import com.com.chaos.Blocks.ModBlocks;
 import com.mojang.logging.LogUtils;

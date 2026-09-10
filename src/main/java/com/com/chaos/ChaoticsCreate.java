@@ -2,7 +2,7 @@ package com.com.chaos;
 
 import com.com.chaos.Blocks.ModBlockEntities;
 import com.com.chaos.Blocks.ModBlocks;
-import com.com.chaos.Blocks.Multiblock.Reactor.ModChaosReactorRecipes;
+import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ModChaosReactorRecipes;
 import com.com.chaos.Entities.ModEntities;
 import com.com.chaos.Features.ModWorldgenFeatures;
 import com.com.chaos.Fluids.ModFluids;

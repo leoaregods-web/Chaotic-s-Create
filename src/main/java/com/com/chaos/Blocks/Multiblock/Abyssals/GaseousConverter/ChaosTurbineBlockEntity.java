@@ -3,6 +3,7 @@ package com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter;
 import com.buuz135.replication.api.matter_fluid.MatterStack;
 import com.buuz135.replication.api.matter_fluid.MatterTank;
 import com.com.chaos.Blocks.ModBlockEntities;
+import com.com.chaos.Blocks.Multiblock.MultiblockBuilder;
 import com.com.chaos.Matter.ModMatterTypes;
 import com.com.chaos.ModTags;
 import com.com.chaos.Pressure.PressureAware;
@@ -276,7 +277,7 @@ private static final float STRESS_PER_PRESSURE = SPEED_PER_PRESSURE / 2;
     }
 
     private ChaosTurbineBlockEntity rearTurbineBE(Level level, BlockPos anchorPos) {
-        BlockPos pos = GaseousConverterStructure.resolve(anchorPos, facing, 0, 2, 0); // TURBINE cell per PATTERN
+        BlockPos pos = MultiblockBuilder.resolve(anchorPos, facing, 0, 2, 0); // TURBINE cell per MultiblockPattern
         return level.getBlockEntity(pos) instanceof ChaosTurbineBlockEntity be && be != this ? be : null;
     }
 

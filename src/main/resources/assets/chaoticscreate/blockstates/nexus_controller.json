@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "chaoticscreate:block/nexus_controller", "y": 180 },
+    "facing=south": { "model": "chaoticscreate:block/nexus_controller", "y": 0 },
+    "facing=west":  { "model": "chaoticscreate:block/nexus_controller", "y": 90 },
+    "facing=east":  { "model": "chaoticscreate:block/nexus_controller", "y": 270 }
+  }
+}

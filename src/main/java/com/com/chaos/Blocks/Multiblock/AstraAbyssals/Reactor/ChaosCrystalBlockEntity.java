@@ -1,6 +1,7 @@
 package com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor;
 
 import com.com.chaos.Blocks.ModBlockEntities;
+import com.com.chaos.Blocks.Multiblock.MultiblockBuilder;
 import com.com.chaos.ChaoticsCreate;
 import com.com.chaos.ModDataComponents;
 import com.simibubi.create.content.kinetics.RotationPropagator;
@@ -27,7 +28,7 @@ import java.util.Optional;
  * Every Chaos Crystal - structural, input, or the output controller - runs
  * one of these. Each carries a 2-slot item buffer and a fluid tank so it
  * can accept insertion from a hopper/pipe/bucket (or a direct right-click,
- * see ChaosCrystalBlock) regardless of its eventual role; what changes is
+ * see ChaosCrystalBlock) regardless of its eventual type; what changes is
  * how that buffer gets *used*:
  *
  *  - Structural (base cardinals): buffer sits unused. Easy extension point
@@ -48,9 +49,6 @@ import java.util.Optional;
  * shipping since it'll spam every second per active reactor.
  */
 public class ChaosCrystalBlockEntity extends KineticBlockEntity {
-
-    private float currentGeneratedSpeed = 0;
-    private float currentGeneratedStress = 0;
 
     public static boolean DEBUG_LOGGING = true;
 
@@ -147,9 +145,9 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
     /** Debug helper: reports the first pattern cell that doesn't match, for the given facing guess. */
     private void logFirstMismatch(Level level, BlockPos anchorPos, Direction facingGuess) {
         for (ChaosReactorStructure.Cell cell : ChaosReactorStructure.debugCells()) {
-            BlockPos target = ChaosReactorStructure.resolve(anchorPos, facingGuess, cell.right(), cell.back(), cell.up());
-            if (!ChaosReactorStructure.matchesRoleDebug(level.getBlockState(target), cell.role())) {
-                debug("First mismatch (facing guess " + facingGuess + "): expected " + cell.role()
+            BlockPos target = MultiblockBuilder.resolve(anchorPos, facingGuess, cell.right(), cell.back(), cell.z());
+            if (!ChaosReactorStructure.matchesRoleDebug(level.getBlockState(target), cell.type())) {
+                debug("First mismatch (facing guess " + facingGuess + "): expected " + cell.type()
                     + " at " + target + " but found " + level.getBlockState(target).getBlock());
                 return;
             }
@@ -277,7 +275,7 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
     }
 
     private ChaosCrystalBlockEntity crystalAt(Level level, BlockPos anchorPos, ChaosReactorStructure.Cell cell) {
-        BlockPos target = ChaosReactorStructure.resolve(anchorPos, facing, cell.right(), cell.back(), cell.up());
+        BlockPos target = MultiblockBuilder.resolve(anchorPos, facing, cell.right(), cell.back(), cell.z());
         return level.getBlockEntity(target) instanceof ChaosCrystalBlockEntity c ? c : null;
     }
 
@@ -346,25 +344,6 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         return fluidBuffer.getFluid();
     }
 
-    private void updateKineticOutput(Level level, float rpm, float capacity) {
-        if (this.currentGeneratedSpeed != rpm || this.currentGeneratedStress != capacity) {
-            this.currentGeneratedSpeed = rpm;
-            this.currentGeneratedStress = capacity;
-            setChanged();
-
-            if (!level.isClientSide) {
-                // Because 'this' is now natively recognized as a KineticBlockEntity,
-                // these methods compile safely and instantly re-route torque lines.
-                RotationPropagator.handleRemoved(level, this.worldPosition, this);
-                if (rpm != 0) {
-                    RotationPropagator.handleAdded(level, this.worldPosition, this);
-                }
-                // Notifies nearby gears and shafts to look at our block for network changes
-                this.notifyUpdate();
-            }
-        }
-    }
-
     // ------------------------------------------------------------------
     // Persistence
     // ------------------------------------------------------------------
@@ -381,8 +360,6 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         tag.putString("Facing", facing.getSerializedName());
 
         // Save your custom multiblock pressure and kinetic physics states
-        tag.putFloat("CurrentGeneratedSpeed", currentGeneratedSpeed);
-        tag.putFloat("CurrentGeneratedStress", currentGeneratedStress);
     }
 
     @Override
@@ -396,9 +373,5 @@ public class ChaosCrystalBlockEntity extends KineticBlockEntity {
         structureValid = tag.getBoolean("StructureValid");
         facing = Direction.byName(tag.getString("Facing"));
         if (facing == null) facing = Direction.NORTH;
-
-        // Load your custom states
-        currentGeneratedSpeed = tag.getFloat("CurrentGeneratedSpeed");
-        currentGeneratedStress = tag.getFloat("CurrentGeneratedStress");
     }
 }

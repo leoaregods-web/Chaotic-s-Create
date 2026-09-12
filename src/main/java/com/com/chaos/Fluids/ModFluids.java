@@ -80,7 +80,7 @@ public class ModFluids {
     private static final IClientFluidTypeExtensions liquidOxygenExt = createTintedFluidExt(0x996EB8FF);
     private static final IClientFluidTypeExtensions liquidNitrogenExt = createTintedFluidExt(0x99FFFFFF);
     private static final IClientFluidTypeExtensions liquidArgonExt = createTintedFluidExt(0x99C9A0FF);
-    private static final IClientFluidTypeExtensions liquidCarbonExt = createTintedFluidExt(0x88000000);
+    private static final IClientFluidTypeExtensions liquidCarbonExt = createTintedFluidExt(0xF5000000);
 
     private static IClientFluidTypeExtensions createTintedFluidExt(int tint) {
         return new IClientFluidTypeExtensions() {

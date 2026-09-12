@@ -1,17 +1,17 @@
-package com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter;
+package com.com.chaos.Blocks.Multiblock.Astral.NexusOfChaos;
 
 import com.com.chaos.Blocks.ModBlockEntities;
+import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.ChaosTurbineBlockEntity;
+import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ChaosCrystalBlockEntity;
 import com.com.chaos.Pressure.PressureManager;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -21,17 +21,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import com.simibubi.create.content.kinetics.base.KineticBlock;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * The turbine is a real Create kinetic block. Its rotor axis follows FACING,
- * while its controller/multiblock type is handled by the BlockEntity.
- */
-public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
+public class NexusControllerBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public ChaosTurbineBlock(Properties properties) {
+    public NexusControllerBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -47,20 +43,14 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
-    @Override
     public Direction.Axis getRotationAxis(BlockState state) {
         return state.getValue(FACING).getAxis();
-    }
-
-    @Override
-    public boolean hasShaftTowards(LevelReader level, BlockPos pos, BlockState state, Direction face) {
-        return face.getAxis() == getRotationAxis(state);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ChaosTurbineBlockEntity(pos, state);
+        return new NexusControllerBlockEntity(pos, state);
     }
 
     @Nullable
@@ -71,13 +61,13 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
             BlockEntityType<T> type) {
         return level.isClientSide
                 ? createTickerHelper(
-                        type,
-                        ModBlockEntities.CHAOS_TURBINE.get(),
-                        ChaosTurbineBlockEntity::clientTick)
+                type,
+                ModBlockEntities.NEXUS_CONTROLLER.get(),
+                NexusControllerBlockEntity::clientTick)
                 : createTickerHelper(
-                        type,
-                        ModBlockEntities.CHAOS_TURBINE.get(),
-                        ChaosTurbineBlockEntity::serverTick);
+                type,
+                ModBlockEntities.NEXUS_CONTROLLER.get(),
+                NexusControllerBlockEntity::serverTick);
     }
 
     @SuppressWarnings("unchecked")
@@ -88,11 +78,6 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
         return type == expected ? (BlockEntityTicker<T>) ticker : null;
     }
 
-    /**
-     * Tell a turbine controller to re-check its multiblock when a player places
-     * another block directly around it. The periodic scan is still the fallback
-     * for changes elsewhere in the 3x3x3 structure.
-     */
     @Override
     public void neighborChanged(
             BlockState state,
@@ -103,10 +88,9 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, neighborPos, movedByPiston);
         if (!level.isClientSide) {
-            PressureManager.get(level).invalidate(pos);
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof ChaosTurbineBlockEntity turbine) {
-                turbine.requestRevalidate();
+            if (be instanceof NexusControllerBlockEntity nexus) {
+                nexus.requestRevalidate();
             }
         }
     }
@@ -114,14 +98,14 @@ public class ChaosTurbineBlock extends KineticBlock implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) {
-            if (!(level.getBlockEntity(pos) instanceof ChaosTurbineBlockEntity turbine)) {
+            if (!(level.getBlockEntity(pos) instanceof NexusControllerBlockEntity nexus)) {
                 return InteractionResult.PASS;
             }
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                        Component.literal("Chaos Turbine @ " + pos.toShortString() + " - ")
+                        Component.literal("Nexus Controller @ " + pos.toShortString() + " - ")
                                 .withStyle(ChatFormatting.GRAY)
-                                .append(Component.literal(turbine.describeStatus()).withStyle(ChatFormatting.AQUA)),
+                                .append(Component.literal(nexus.describeStatus()).withStyle(ChatFormatting.AQUA)),
                         false);
             }
             return InteractionResult.SUCCESS;

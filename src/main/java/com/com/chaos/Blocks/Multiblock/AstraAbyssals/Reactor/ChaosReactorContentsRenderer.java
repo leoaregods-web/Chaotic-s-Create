@@ -1,5 +1,6 @@
 package com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor;
 
+import com.com.chaos.Blocks.Multiblock.MultiblockBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -55,7 +56,7 @@ public class ChaosReactorContentsRenderer implements BlockEntityRenderer<ChaosCr
     }
 
     private void translateToCore(PoseStack poseStack, BlockPos anchor, Direction facing, int up) {
-        BlockPos target = ChaosReactorStructure.resolve(anchor, facing,
+        BlockPos target = MultiblockBuilder.resolve(anchor, facing,
             ChaosReactorStructure.CORE_RIGHT, ChaosReactorStructure.CORE_BACK, up);
         poseStack.translate(
             target.getX() - anchor.getX(),

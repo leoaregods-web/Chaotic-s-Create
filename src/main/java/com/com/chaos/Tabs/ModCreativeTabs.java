@@ -62,6 +62,7 @@ public class ModCreativeTabs {
                         output.accept(ModBlocks.CHAOS_TURBINE_ITEM.get());
                         output.accept(ModBlocks.PRESSURIZED_ABYSSAL_IRON_BLOCK_ITEM.get());
                         output.accept(ModItems.SHARD_OF_CHAOS.get());
+                        output.accept(ModBlocks.NEXUS_CONTROLLER_ITEM.get());
                     })
                     .build());
 

@@ -3,6 +3,7 @@ package com.com.chaos.Blocks;
 import com.com.chaos.Blocks.FluidReplicator.FluidReplicatorBlockEntity;
 import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.ChaosTurbineBlockEntity;
 import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ChaosCrystalBlockEntity;
+import com.com.chaos.Blocks.Multiblock.Astral.NexusOfChaos.NexusControllerBlockEntity;
 import com.com.chaos.ChaoticsCreate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,6 +22,12 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             AtmosphereLiquifierBlockEntity::new,
                             ModBlocks.ATMOSPHERE_LIQUIFIER.get()
+                    ).build(null));
+    public static final Supplier<BlockEntityType<NexusControllerBlockEntity>> NEXUS_CONTROLLER =
+            BLOCK_ENTITY_TYPES.register("nexus_controller",
+                    () -> BlockEntityType.Builder.of(
+                            NexusControllerBlockEntity::new,
+                            ModBlocks.NEXUS_CONTROLLER.get()
                     ).build(null));
     public static final Supplier<BlockEntityType<CapsuleConcentratorBlockEntity>> CAPSULE_CONCENTRATOR =
             BLOCK_ENTITY_TYPES.register("capsule_concentrator",

@@ -3,6 +3,7 @@ package com.com.chaos.Blocks;
 import com.com.chaos.Blocks.FluidReplicator.FluidReplicatorBlock;
 import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.ChaosTurbineBlock;
 import com.com.chaos.Blocks.Multiblock.AstraAbyssals.Reactor.ChaosCrystalBlock;
+import com.com.chaos.Blocks.Multiblock.Astral.NexusOfChaos.NexusControllerBlock;
 import com.com.chaos.ChaoticsCreate;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -48,6 +49,8 @@ public class ModBlocks {
 
     public static final DeferredBlock<AtmosphereLiquifierBlock> ATMOSPHERE_LIQUIFIER =
             BLOCKS.registerBlock("atmosphere_liquifier", AtmosphereLiquifierBlock::new, BlockBehaviour.Properties.of().strength(1.5f, 6.0f).noOcclusion().sound(SoundType.METAL));
+    public static final DeferredBlock<NexusControllerBlock> NEXUS_CONTROLLER =
+            BLOCKS.registerBlock("nexus_controller", NexusControllerBlock::new, BlockBehaviour.Properties.of().strength(1.5f, 6.0f).noOcclusion().sound(SoundType.METAL));
     public static final DeferredBlock<ChaosTurbineBlock> CHAOS_TURBINE =
             BLOCKS.registerBlock("chaos_turbine", ChaosTurbineBlock::new, BlockBehaviour.Properties.of().strength(1.5f, 6.0f).noOcclusion().sound(SoundType.METAL));
     public static final DeferredBlock<FluidReplicatorBlock> FLUID_REPLICATOR =
@@ -110,6 +113,8 @@ public class ModBlocks {
             BLOCKITEMS.registerSimpleBlockItem(FLUID_REPLICATOR);
     public static final DeferredItem<BlockItem> PRESSURIZED_ABYSSAL_IRON_BLOCK_ITEM =
             BLOCKITEMS.registerSimpleBlockItem(PRESSURIZED_ABYSSAL_IRON_BLOCK);
+    public static final DeferredItem<BlockItem> NEXUS_CONTROLLER_ITEM =
+            BLOCKITEMS.registerSimpleBlockItem(NEXUS_CONTROLLER);
     public static final DeferredBlock<BasicProcessorUpgradeBlock> BASIC_PROCESSOR_UPGRADE =
             BLOCKS.registerBlock("basic_processor_upgrade", BasicProcessorUpgradeBlock::new,
                     BlockBehaviour.Properties.of().noCollission().strength(0.5f).sound(SoundType.METAL));

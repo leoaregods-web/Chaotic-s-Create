@@ -5,6 +5,8 @@ import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.ChaosTurbineBlo
 import com.com.chaos.Blocks.Multiblock.Abyssals.GaseousConverter.GaseousConverterStructure;
 import com.com.chaos.Blocks.Multiblock.Astral.ModularMultiblockController;
 import com.com.chaos.Blocks.Multiblock.Astral.ModularMultiblockModule;
+import com.com.chaos.Energy.ChaosEnergy;
+import com.com.chaos.Energy.ChaosEnergyManager;
 import com.com.chaos.Pressure.PressureManager;
 import com.com.chaos.Pressure.PressureRatio;
 import com.mojang.logging.LogUtils;
@@ -85,6 +87,21 @@ public class NexusControllerBlockEntity extends BlockEntity {
         return facing;
     }
 
+    /**
+     * Gets the current chaos energy storage for this nexus.
+     */
+    public ChaosEnergyManager.ChaosEnergyStorage getChaosEnergy(Level level) {
+        return ChaosEnergyManager.get(level).getOrCreateStorage(level, getBlockPos());
+    }
+
+    /**
+     * Checks if this nexus has enough chaos energy to operate.
+     */
+    public boolean hasEnoughEnergy(Level level) {
+        ChaosEnergyManager.ChaosEnergyStorage storage = getChaosEnergy(level);
+        return storage.energy >= ChaosEnergy.ACTIVATION_THRESHOLD;
+    }
+
     public static void serverTick(
             Level level,
             BlockPos pos,
@@ -98,8 +115,19 @@ public class NexusControllerBlockEntity extends BlockEntity {
         }
 
         if (be.isController && be.structureValid) {
-            be.modules.revalidate(level, pos, be.facing);
-            be.modules.tickModules(level, pos, be.facing);
+            // Check if any modules are actively working
+            boolean isActive = !be.modules.getActiveModules().isEmpty();
+            
+            // Apply chaos energy decay
+            ChaosEnergyManager.get(level).applyDecay(pos, isActive);
+            
+            // Only tick modules if we have enough energy
+            if (be.hasEnoughEnergy(level)) {
+                be.modules.revalidate(level, pos, be.facing);
+                be.modules.tickModules(level, pos, be.facing);
+            }
+            
+            be.setChanged();
         }
     }
 
@@ -125,11 +153,62 @@ public class NexusControllerBlockEntity extends BlockEntity {
         }
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        
+        // Save chaos energy state
+        if (level != null) {
+            ChaosEnergyManager.ChaosEnergyStorage storage = getChaosEnergy(level);
+            CompoundTag energyTag = new CompoundTag();
+            energyTag.putLong("energy", storage.energy);
+            energyTag.putLong("capacity", storage.capacity);
+            tag.put("chaosEnergy", energyTag);
+        }
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        
+        // Restore chaos energy state
+        if (tag.contains("chaosEnergy")) {
+            CompoundTag energyTag = tag.getCompound("chaosEnergy");
+            long energy = energyTag.getLong("energy");
+            long capacity = energyTag.getLong("capacity");
+            
+            if (level != null) {
+                ChaosEnergyManager.ChaosEnergyStorage storage = 
+                    ChaosEnergyManager.get(level).getOrCreateStorage(level, getBlockPos());
+                storage.energy = ChaosEnergy.clamp(energy, capacity);
+                storage.capacity = capacity;
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
     public String describeStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("controller=").append(isController);
         sb.append(", structureValid=").append(structureValid);
         sb.append(", facing=").append(facing);
+
+        if (level != null) {
+            ChaosEnergyManager.ChaosEnergyStorage energy = getChaosEnergy(level);
+            sb.append(", energy=").append(energy.energy).append("/").append(energy.capacity);
+            sb.append(" (").append(String.format("%.1f%%", energy.getPercent() * 100)).append(")");
+            sb.append(", tier=").append(energy.getTier());
+        }
 
         if (isController && structureValid) {
             Map<ModularMultiblockController.Port, ModularMultiblockModule> active = modules.getActiveModules();
@@ -146,7 +225,7 @@ public class NexusControllerBlockEntity extends BlockEntity {
         // Always log this - it's only ever triggered by an explicit shift-click,
         // so there's no spam risk, and it means the report can be copy-pasted
         // straight out of latest.log instead of off the chat screen.
-        LOGGER.info("[ChaosTurbine] Status @ {}: {}", getBlockPos(), status);
+        LOGGER.info("[NexusController] Status @ {}: {}", getBlockPos(), status);
         return status;
     }
 }

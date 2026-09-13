@@ -3,8 +3,6 @@ package com.com.chaos.Blocks.Multiblock.Astral.Modules;
 import com.com.chaos.Blocks.Multiblock.Astral.ModularMultiblockController;
 import com.com.chaos.Blocks.Multiblock.Astral.ModularMultiblockModule;
 import com.com.chaos.Blocks.Multiblock.MultiblockBuilder;
-import com.com.chaos.Energy.ChaosEnergy;
-import com.com.chaos.Energy.ChaosEnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -12,19 +10,31 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 /**
- * Chaos Battery Module - stores chaos energy and can feed it back to the nexus.
- * Acts as a buffer and capacity expansion for the nexus.
+ * Chaos Battery Module - stores chaos energy and expands nexus capacity.
  * 
- * Can be installed at any module port to increase storage capacity by 50,000 CE
- * and provide passive energy generation (e.g., from ambient chaos in the world).
+ * Uses the shared ModuleAnchorBlock as its anchor point.
+ * Structure: 3x3x2 tower of Astral-Abyss Casing with the ModuleAnchorBlock at the center bottom.
+ * When attached to a Nexus port, increases storage capacity by 50,000 CE and generates 5 CE/tick passively.
+ * 
+ * Physical build (when placed at a port):
+ *   Layer 1 (top):        Layer 0 (bottom):
+ *   A A A                 A A A
+ *   A A A                 A M A   (M=ModuleAnchorBlock)
+ *   A A A                 A A A
  */
 public enum ChaosBatteryModule implements ModularMultiblockModule {
     INSTANCE;
 
-    // Simple 1x1x1 anchor module - just the core
+    // 3x3x2 structure with ModuleAnchorBlock in the center bottom
     private static final List<MultiblockBuilder.Cell> PATTERN = MultiblockBuilder.pattern()
-            .aisle("0")
-            .anchor('0')
+            .aisle("AAA",
+                   "AAA",
+                   "AAA")
+            .aisle("AAA",
+                   "A@A",
+                   "AAA")
+            .where('A', MultiblockBuilder.Type.ASTRAL_ABYSS_CASING)
+            .anchor('@')
             .build();
 
     // How much extra capacity this module adds to the nexus
